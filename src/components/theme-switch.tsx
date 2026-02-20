@@ -11,31 +11,25 @@ export interface ThemeSwitchProps {
   classNames?: SwitchProps["classNames"];
 }
 
-export const ThemeSwitch: FC<ThemeSwitchProps> = ({
-  className,
-  classNames,
-}) => {
+export const ThemeSwitch: FC<ThemeSwitchProps> = ({ className, classNames }) => {
   const [isMounted, setIsMounted] = useState(false);
-
   const { theme, setTheme } = useTheme();
 
-  const {
-    Component,
-    slots,
-    isSelected,
-    getBaseProps,
-    getInputProps,
-    getWrapperProps,
-  } = useSwitch({
-    isSelected: theme === "light",
-    onChange: () => setTheme(theme === "light" ? "dark" : "light"),
-  });
+  // Default to dark mode on first load
+  useEffect(() => {
+    if (!theme) setTheme("dark");
+  }, []);
+
+  const { Component, slots, isSelected, getBaseProps, getInputProps, getWrapperProps } =
+    useSwitch({
+      isSelected: theme === "light",
+      onChange: () => setTheme(theme === "light" ? "dark" : "light"),
+    });
 
   useEffect(() => {
     setIsMounted(true);
-  }, [isMounted]);
+  }, []);
 
-  // Prevent Hydration Mismatch
   if (!isMounted) return <div className="w-6 h-6" />;
 
   return (
@@ -56,26 +50,16 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({
         {...getWrapperProps()}
         className={slots.wrapper({
           class: clsx(
-            [
-              "w-auto h-auto",
-              "bg-transparent",
-              "rounded-lg",
-              "flex items-center justify-center",
-              "group-data-[selected=true]:bg-transparent",
-              "!text-default-500",
-              "pt-px",
-              "px-0",
-              "mx-0",
-            ],
+            ["w-auto h-auto", "bg-transparent", "rounded-lg",
+             "flex items-center justify-center",
+             "group-data-[selected=true]:bg-transparent",
+             "!text-default-500", "pt-px", "px-0", "mx-0"],
             classNames?.wrapper,
           ),
         })}
       >
-        {isSelected ? (
-          <MoonFilledIcon size={22} />
-        ) : (
-          <SunFilledIcon size={22} />
-        )}
+        {/* Show Sun icon in light mode, Moon icon in dark mode */}
+        {isSelected ? <SunFilledIcon size={22} /> : <MoonFilledIcon size={22} />}
       </div>
     </Component>
   );
