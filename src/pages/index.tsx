@@ -11,7 +11,6 @@ export default function IndexPage() {
   return (
     <DefaultLayout>
       <div >
-        <Navbar/>
         <Hero />  
         <JustReleased/>
         <div className="mt-20">

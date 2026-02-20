@@ -7,22 +7,14 @@ export default function DefaultLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="relative flex flex-col min-h-screen overflow-x-hidden">
-      <div className="hidden">
-              <Navbar />
+    <div className="relative flex flex-col min-h-screen overflow-x-hidden bg-[#07070a]">
+      <Navbar />
 
-      </div>
-
-      {/* Full-screen Hero */}
-
-
-      {/* Main content below Hero, with padding and container */}
-      <main className="flex-grow  ">
+      <main className="flex-grow">
         {children}
       </main>
 
       <footer className="w-full flex items-center justify-center py-3">
-        {/* Footer content */}
       </footer> 
     </div>
   );
